@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+<br><br><br>
+<section class="job-create-section">
+    <!-- EXPANDED: Main Big White Card Wrapping Everything -->
+    <div class="main-dashboard-card">
+
+        <!-- Centered Page Title -->
+        <h1 class="page-title">My Job Posts</h1>
+
+        <!-- Dashboard Content Grid Layout -->
+        <div class="dashboard-content">
+
+            <!-- Left Side: Smaller Job Posts List -->
+            <div class="job-list-column">
+                {% if jobs %}
+                {% for job in jobs %}
+                <a href="{% url 'view_job' job.pk %}" class="job-link">
+                    <div class="job-item">
+                        <h2>{{ job.title }}</h2>
+
+                        <p style="margin:4px 0; color:#48d9d4; font-weight:600; font-size: 0.9rem;">
+                            {{ job.get_employment_type_display }} • {{ job.city }}
+                        </p>
+
+                        <p style="color:#708090; font-size: 0.85rem; margin: 4px 0;">
+                            {{ job.category }}
+                        </p>
+
+                        <p style="margin:10px 0 5px 0; font-size: 0.9rem;">
+                            Salary:
+                            <strong>${{ job.salary_min }} - ${{ job.salary_max }}</strong>
+                        </p>
+
+                        {% if job.is_active %}
+                        <p style="color:#48d9d4; font-size: 0.85rem; margin-top: 5px; margin-bottom: 0;">● Active</p>
+                        {% else %}
+                        <p style="color:#708090; font-size: 0.85rem; margin-top: 5px; margin-bottom: 0;">● Closed</p>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+
+
+        </div>
+    </div>
+</section>
+
+<style>
+    /* BIGGER & WIDER Wrapper Card */
+    .main-dashboard-card {
+        background: #ffffff;
+        border-radius: 28px;
+        padding: 50px 60px; /* Increased padding for an airy feel */
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+        max-width: 1400px; /* Bumped up from 1200px to make it widescreen and clean */
+        width: 92%;        /* Ensures it scales smoothly on medium layouts */
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    /* Centered Title */
+    .page-title {
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 50px;
+        color: #2c3e50;
+        font-size: 2.2rem;
+        letter-spacing: -0.5px;
+    }
+
+    /* Grid Layout with extra spacing */
+    .dashboard-content {
+        display: grid;
+        grid-template-columns: 3.5fr 1fr; /* Adjusted ratio to give job list even more space */
+        gap: 40px; /* Widen gap between jobs list and sidebar */
+        align-items: start;
+    }
+
+    /* Job Card styling */
+    .job-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .job-item {
+        background: rgba(240, 244, 248, 0.6);
+        border-radius: 14px;
+        padding: 18px 24px;
+        margin-bottom: 18px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .job-item h2 {
+        font-size: 1.3rem;
+        margin: 0 0 4px 0;
+        color: #333;
+    }
+
+    .job-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,.05);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 992px) {
+        .dashboard-content {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        .sidebar-column {
+            grid-row: 1;
+            margin-bottom: 10px;
+        }
+        .main-dashboard-card {
+            padding: 30px 20px;
+        }
+    }
+</style>
+{% endblock main %}

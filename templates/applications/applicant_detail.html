@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ariza Tafsilotlari - {{ profile.user.username }}{% endblock %}
+
+{% block main %}
+<div class="container py-5 mt-5">
+    
+    <!-- Profile Header Card (LinkedIn Recruiter Style) -->
+    <div class="card glass-card border-0 rounded-4 overflow-hidden mb-4 shadow-sm">
+        <!-- Banner Profile Background Layer -->
+        <div class="profile-banner position-relative" style="height: 180px; background: linear-gradient(135deg, #0d1b2a 0%, #14b8a6 100%);">
+            <!-- Dynamic Role Badge overlayed on top right of banner -->
+            <span class="badge position-absolute top-0 end-0 m-3 fs-6 px-3 py-2 rounded-pill shadow-sm" 
+                  style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3); color: #fff;">
+                {{ profile.get_role_display|default:"Nomzod" }}
+            </span>
+        </div>
+        
+        <!-- Profile Primary Header Details -->
+        <div class="card-body px-4 pb-4 position-relative" style="margin-top: -60px;">
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-end gap-3 mb-3">
+                <!-- Circular Avatar Frame -->
+                <div class="avatar-container position-relative">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}" class="rounded-circle border border-4 border-white shadow" style="width: 120px; height: 120px; object-fit: cover; background-color: #fff;">
+                    {% else %}
+                        <div class="rounded-circle border border-4 border-white shadow d-flex align-items-center justify-content-center fw-bold text-white fs-2" style="width: 120px; height: 120px; background: #0f172a;">
+                            {{ profile.user.username|slice:":1"|upper }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Quick Bio Meta Elements -->
+                <div class="user-meta-info flex-grow-1">
+                    <h2 class="fw-bold mb-1" style="color: #0f172a;">{{ profile.user.get_full_name|default:profile.user.username }}</h2>
+                    <div class="d-flex flex-wrap gap-3 text-muted align-items-center fs-6">
+                        {% if profile.city %}
+                            <span><i class="bi bi-geo-alt me-1 text-teal"></i>{{ profile.city }}</span>
+                        {% endif %}
+                        {% if profile.phone_number %}
+                            <span><i class="bi bi-telephone me-1 text-teal"></i>{{ profile.phone_number }}</span>
+                        {% endif %}
+                        <span><i class="bi bi-envelope me-1 text-teal"></i>{{ profile.user.email }}</span>
+                    </div>
+                </div>
+
+                <!-- Live Status Meta Component Box -->
+                <div class="ms-md-auto text-md-end mt-3 mt-md-0">
+                    <small class="text-muted d-block mb-1 text-uppercase tracking-wider fw-semibold" style="font-size: 0.75rem;">Ariza holati</small>
+                    {% if application.status == 'pending' %}
+                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill fs-6 fw-semibold">Ko'rib chiqilmoqda</span>
+                    {% elif application.status == 'accepted' %}
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fs-6 fw-semibold">Qabul qilingan</span>
+                    {% else %}
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fs-6 fw-semibold">Rad etilgan</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Profile Summary / Bio Field -->
+            {% if profile.bio %}
+                <hr class="my-3 opacity-10">
+                <div class="profile-bio">
+                    <h6 class="fw-bold text-uppercase text-secondary tracking-wider mb-2" style="font-size: 0.8rem;">O'zi haqida qisqacha</h6>
+                    <p class="text-secondary mb-0" style="line-height: 1.6;">{{ profile.bio }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Details Split Grid Layout Layout -->
+    <div class="row g-4">
+        
+        <!-- Left Structural Column (Resume Contents) -->
+        <div class="col-lg-8">
+            <!-- Professional Experience -->
+            <div class="card glass-card border-0 rounded-4 p-4 mb-4 shadow-sm">
+                <h4 class="fw-bold mb-4 d-flex align-items-center" style="color: #0f172a;">
+                    <i class="bi bi-briefcase me-2 text-teal"></i> Ish tajribasi
+                </h4>
+                {% if resume.experience %}
+                    <div class="rich-text-content text-secondary" style="white-space: pre-line; line-height: 1.7;">
+                        {{ resume.experience }}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0 italic-text">Ish tajribasi ma'lumotlari kiritilmagan.</p>
+                {% endif %}
+            </div>
+
+            <!-- Education Profile Block -->
+            <div class="card glass-card border-0 rounded-4 p-4 mb-4 shadow-sm">
+                <h4 class="fw-bold mb-4 d-flex align-items-center" style="color: #0f172a;">
+                    <i class="bi bi-mortarboard me-2 text-teal"></i> Ma'lumoti
+                </h4>
+                {% if resume.education %}
+                    <div class="rich-text-content text-secondary" style="white-space: pre-line; line-height: 1.7;">
+                        {{ resume.education }}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0 italic-text">Ta'lim ma'lumotlari kiritilmagan.</p>
+                {% endif %}
+            </div>
+
+            <!-- Cover Letter Core Block -->
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm">
+                <h4 class="fw-bold mb-4 d-flex align-items-center" style="color: #0f172a;">
+                    <i class="bi bi-file-earmark-text me-2 text-teal"></i> Yo'llovchi xat (Cover Letter)
+                </h4>
+                {% if application.cover_letter %}
+                    <div class="cover-letter-box p-3 rounded-3 text-secondary" style="background: rgba(255,255,255,0.4); border: 1px solid rgba(0,0,0,0.03); white-space: pre-line; line-height: 1.7;">
+                        {{ application.cover_letter }}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0 italic-text">Nomzod yo'llovchi xat taqdim etmagan.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Side Utility Parameters Panel -->
+        <div class="col-lg-4">
+            
+            <!-- Core Skills Block -->
+            <div class="card glass-card border-0 rounded-4 p-4 mb-4 shadow-sm">
+                <h5 class="fw-bold mb-3" style="color: #0f172a;">Ko'nikmalar</h5>
+                {% if resume.skills %}
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for skill in resume.skills.all %}
+                            <span class="badge px-3 py-2 rounded-pill text-dark font-medium" style="background: rgba(20, 184, 166, 0.08); color: #0d9488 !important; border: 1px solid rgba(20, 184, 166, 0.15);">
+                                {{ skill.name }}
+                            </span>
+                        {% empty %}
+                            <!-- Fallback for standard comma split if skills is normal text string field -->
+                            <div class="text-secondary">{{ resume.skills }}</div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0 small">Ko'nikmalar belgilanmagan.</p>
+                {% endif %}
+            </div>
+
+            <!-- Application Metadata Summary Box -->
+            <div class="card glass-card border-0 rounded-4 p-4 mb-4 shadow-sm">
+                <h5 class="fw-bold mb-3" style="color: #0f172a;">Ariza haqida</h5>
+                <div class="d-flex flex-column gap-3 fs-6">
+                    <div class="d-flex justify-content-between border-bottom pb-2" style="border-color: rgba(0,0,0,0.05) !important;">
+                        <span class="text-muted">Topshirilgan sana:</span>
+                        <span class="fw-medium text-dark">{{ application.applied_at|date:"d.m.Y H:i" }}</span>
+                    </div>
+                    {% if resume.resume_file %}
+                    <div class="pt-2">
+                        <a href="{{ resume.resume_file.url }}" class="btn btn-outline-dark rounded-pill w-100 py-2 d-flex align-items-center justify-content-center gap-2 fw-medium transition-all" download>
+                            <i class="bi bi-download"></i> Rezumeni yuklab olish (PDF)
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions Controls Context Window Form Panel -->
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm sticky-lg-top" style="top: 100px; z-index: 10;">
+                <h5 class="fw-bold mb-3 text-center text-lg-start" style="color: #0f172a;">Qaror qabul qilish</h5>
+                <p class="text-muted small mb-4 text-center text-lg-start">Nomzod arizasini ko'rib chiqib, mos keladigan statusni tanlang.</p>
+                
+                <div class="d-flex flex-column gap-2">
+                    <!-- Accept Form Action Button Wrapper -->
+                    <form action="{% url 'accept_application' application.id %}" method="POST" class="w-100">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary rounded-pill w-100 py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2"
+                                {% if application.status == 'accepted' %}disabled{% endif %}>
+                            <i class="bi bi-check-circle-fill"></i> Arizani qabul qilish
+                        </button>
+                    </form>
+
+                    <!-- Reject Form Action Button Wrapper -->
+                    <form action="{% url 'reject_application' application.id %}" method="POST" class="w-100">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger rounded-pill w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2"
+                                {% if application.status == 'rejected' %}disabled{% endif %}>
+                            <i class="bi bi-x-circle-fill"></i> Arizani rad etish
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Exact Profile Alignment Rules & Glassmorphism Tokens */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.75) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .text-teal {
+        color: #14b8a6 !important;
+    }
+
+    .btn-primary {
+        background-color: #14b8a6 !important;
+        border-color: #14b8a6 !important;
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover:not([disabled]) {
+        background-color: #0d9488 !important;
+        border-color: #0d9488 !important;
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-danger {
+        border-color: #ef4444 !important;
+        color: #ef4444 !important;
+        transition: all 0.2s ease;
+    }
+
+    .btn-outline-danger:hover:not([disabled]) {
+        background-color: #ef4444 !important;
+        color: #ffffff !important;
+        transform: translateY(-1px);
+    }
+    
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .italic-text {
+        font-style: italic;
+    }
+</style>
+{% endblock %}

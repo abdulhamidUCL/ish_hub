@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+
+<section class="job-create-section">
+
+    <div class="job-card">
+
+        <div class="job-header">
+            <h1>Create Job Post</h1>
+            <p>Find the perfect employee for your company.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row-2">
+
+                <div class="form-group">
+                    <label>Job Title</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    {{ form.category }}
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-group">
+                <label>Requirements</label>
+                {{ form.requirements }}
+            </div>
+
+            <div class="row-2">
+
+                <div class="form-group">
+                    <label>Minimum Salary</label>
+                    {{ form.salary_min }}
+                </div>
+
+                <div class="form-group">
+                    <label>Maximum Salary</label>
+                    {{ form.salary_max }}
+                </div>
+
+            </div>
+
+            <div class="row-2">
+
+                <div class="form-group">
+                    <label>Employment Type</label>
+                    {{ form.employment_type }}
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    {{ form.city }}
+                </div>
+
+            </div>
+
+            <div class="row-2">
+
+                <div class="form-group">
+                    <label>Deadline</label>
+                    {{ form.deadline }}
+                </div>
+
+                <div class="form-group switch">
+                    <label>Job Status</label>
+
+                    <div class="switch-box">
+                        {{ form.is_active }}
+                        <span>Active</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="publish-btn">
+                Publish Job
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<style>
+  .job-create-section{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:80px 20px;
+}
+
+.job-card{
+
+    width:100%;
+    max-width:950px;
+
+    background:rgba(255,255,255,.42);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.35);
+
+    border-radius:30px;
+
+    padding:45px;
+
+    box-shadow:
+        0 25px 60px rgba(25,120,140,.15);
+}
+
+.job-header{
+    margin-bottom:40px;
+}
+
+.job-header h1{
+
+    font-size:38px;
+    font-weight:700;
+    color:#1d2f40;
+
+    margin-bottom:8px;
+}
+
+.job-header p{
+
+    color:#708090;
+    font-size:17px;
+}
+
+.row-2{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.form-group{
+
+    display:flex;
+    flex-direction:column;
+
+    margin-bottom:24px;
+}
+
+.form-group label{
+
+    margin-bottom:10px;
+
+    font-weight:600;
+
+    color:#2d4456;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+    width:100%;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.70);
+
+    padding:15px 18px;
+
+    font-size:15px;
+
+    transition:.3s;
+
+    outline:none;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(160,190,200,.25);
+}
+
+.form-group textarea{
+
+    resize:vertical;
+
+    min-height:150px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+
+    background:white;
+
+    box-shadow:
+        0 0 0 4px rgba(70,220,220,.18);
+}
+
+.switch-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    height:56px;
+}
+
+.switch-box input{
+
+    width:18px;
+
+    height:18px;
+}
+
+.publish-btn{
+
+    margin-top:20px;
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+        135deg,
+        #48d9d4,
+        #5bc8ff
+    );
+
+    transition:.35s;
+
+    box-shadow:
+        0 18px 35px rgba(76,214,223,.35);
+}
+
+.publish-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 22px 45px rgba(76,214,223,.45);
+}
+
+@media(max-width:768px){
+
+    .row-2{
+
+        grid-template-columns:1fr;
+    }
+
+    .job-card{
+
+        padding:30px;
+    }
+
+    .job-header h1{
+
+        font-size:30px;
+    }
+}
+</style>
+{% endblock %}

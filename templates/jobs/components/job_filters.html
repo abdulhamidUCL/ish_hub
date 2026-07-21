@@ -1,0 +1,133 @@
+<div class="filter-card">
+    <h3 class="filter-title">Filters</h3>
+
+    <table class="filter-table">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="?sort=new" class="filter-link">Newest</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="?sort=old" class="filter-link">Oldest</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="?sort=a-z" class="filter-link">A-Z</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="?sort=z-a" class="filter-link">Z-A</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .filter-card {
+        background: rgba(240, 244, 248, 0.6);
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .filter-title {
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+        padding-bottom: 8px;
+    }
+
+    .filter-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .filter-table td {
+        padding: 4px 0;
+    }
+
+    .filter-link {
+        display: block;
+        width: 100%;
+        padding: 8px 12px;
+        color: #5a6c7d;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .filter-link:hover {
+        background-color: #48d9d4;
+        color: #ffffff;
+        padding-left: 16px; /* Subtle sliding visual shift effect */
+    }
+
+    .glass-create-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    padding:14px 18px;
+
+    text-decoration:none;
+    font-weight:600;
+    font-size:1rem;
+    letter-spacing:.3px;
+
+    color:#0b131f;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.35);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.4);
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.08),
+        inset 0 1px 0 rgba(255,255,255,.45);
+
+    transition:all .3s ease;
+}
+
+.glass-create-btn:hover{
+
+    background:linear-gradient(
+        135deg,
+        #14b8a6,
+        #48d9d4
+    );
+
+    color:#fff;
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 15px 35px rgba(20,184,166,.35),
+        inset 0 1px rgba(255,255,255,.25);
+}
+
+.glass-create-btn:active{
+    transform:translateY(0);
+}
+
+.glass-create-btn::before{
+    content:"+";
+    margin-right:10px;
+    font-size:1.2rem;
+    font-weight:700;
+}
+</style>

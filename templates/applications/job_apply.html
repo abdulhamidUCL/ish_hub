@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Ariza yuborish - Ish_Hub{% endblock title %}
+
+{% block main %}
+<div class="apply-container">
+
+    <div class="job-summary-card">
+        <h2>{{ job.title }}</h2>
+        <p class="job-summary-sub">{{ job.company.name }} · {{ job.city }}</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="apply-form">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <p class="field-error">{{ field.errors.0 }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="apply-submit-btn">Ariza yuborish</button>
+    </form>
+
+</div>
+
+<style>
+.apply-container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 60px 24px;
+}
+
+.job-summary-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+}
+
+.job-summary-card h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.job-summary-sub {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.apply-form {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 28px;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="file"],
+.form-field textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.form-field textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.field-error {
+    color: #b91c1c;
+    font-size: 0.85rem;
+    margin: 4px 0 0 0;
+}
+
+.apply-submit-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 32px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.apply-submit-btn:hover {
+    background: #2563eb;
+}
+</style>
+{% endblock main %}

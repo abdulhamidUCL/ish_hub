@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="job-card">
+    <h2>Delete Job</h2>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ job.title }}</strong>?
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit" class="delete-btn">
+            Yes, Delete
+        </button>
+
+        <a href="{% url 'view_job' job.id %}" class="edit-btn">
+            Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}

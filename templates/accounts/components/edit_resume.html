@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ish_Hub{% endblock title %}
+
+{% block main %}
+<br><br>
+<div class="container py-5">
+    <div class="resume-card mx-auto">
+
+        <div class="resume-header">
+            <h2>Edit Resume</h2>
+            <p>Keep your profile updated so employers can find you.</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Professional Title</label>
+                {{ form.title }}
+            </div>
+
+            <div class="form-group">
+                <label>Skills</label>
+                {{ form.skills }}
+            </div>
+
+            <div class="form-group">
+                <label>Experience</label>
+                {{ form.experience }}
+            </div>
+
+            <div class="form-group">
+                <label>Education</label>
+                {{ form.education }}
+            </div>
+
+            <div class="form-group">
+                <label>Resume PDF</label>
+                {{ form.resume_file }}
+            </div>
+
+            <button class="save-btn" type="submit">
+                Save Resume
+            </button>
+        </form>
+
+    </div>
+</div>
+
+
+<style>
+    .resume-card {
+    max-width: 760px;
+    margin: auto;
+
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 28px;
+
+    padding: 40px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.08);
+}
+
+.resume-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.resume-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.resume-header p {
+    color: #6b7280;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-control,
+textarea,
+input[type="text"],
+input[type="file"] {
+
+    width: 100%;
+
+    border: 1px solid #dbe4ee;
+
+    border-radius: 14px;
+
+    padding: 14px 16px;
+
+    background: rgba(255,255,255,.85);
+
+    transition: .25s ease;
+}
+
+.form-control:focus,
+textarea:focus {
+    border-color: #24bfa3;
+
+    box-shadow:
+        0 0 0 4px rgba(36,191,163,.15);
+
+    outline: none;
+}
+
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.save-btn {
+
+    width: 100%;
+
+    border: none;
+
+    border-radius: 16px;
+
+    padding: 15px;
+
+    font-weight: 600;
+
+    color: white;
+
+    background: linear-gradient(
+        135deg,
+        #24bfa3,
+        #1e90ff
+    );
+
+    transition: .3s;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(30,144,255,.25);
+}
+</style>
+{% endblock main %}

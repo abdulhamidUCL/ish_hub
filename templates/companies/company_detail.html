@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+<br><br>
+<div class="company-detail-container">
+
+    <div class="company-glass-card sidebar-card">
+        <div class="logo-wrapper">
+            {% if company.logo %}
+            <img src="{{ company.logo.url }}" alt="{{ company.name }} Logo" class="company-logo">
+            {% else %}
+            <div class="logo-placeholder">{{ company.name|slice:":1" }}</div>
+            {% endif %}
+        </div>
+
+        <h1 class="company-name">
+            {{ company.name }}
+            {% if company.is_verified %}
+            <span class="verified-badge" title="Verified Business">
+                    <svg viewBox="0 0 24 24" class="badge-icon"><path
+                            d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </span>
+            {% endif %}
+        </h1>
+
+        <p class="company-industry">{{ company.industry }}</p>
+
+        <hr class="card-divider">
+
+        <div class="meta-info-list">
+            <div class="meta-item">
+                <span class="meta-label">Location</span>
+                <span class="meta-value">{{ company.city }}</span>
+            </div>
+            {% if company.website %}
+            <div class="meta-item">
+                <span class="meta-label">Website</span>
+                <a href="{{ company.website }}" target="_blank" class="meta-link">
+<!--                    {{ company.website|cut:"https://"|cut:"http://" }}-->
+                    {{ company.name }}
+                </a>
+            </div>
+            {% endif %}
+            <div class="meta-item">
+                <span class="meta-label">Member Since</span>
+                <span class="meta-value">{{ company.created_at|date:"F Y" }}</span>
+            </div>
+        </div>
+
+        {% if request.user == company.owner %}
+        <a href="{% url 'company_edit' %}" class="btn-edit-profile">Edit Company Profile</a>
+        {% endif %}
+    </div>
+
+    <div class="company-glass-card main-content-card">
+        <div class="stats-row">
+            <div class="stat-box">
+                <span class="stat-number">{{ company.employee_count }}</span>
+                <span class="stat-label">Employees</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">
+                    {% if company.is_verified %}
+                        <span class="status-active">Active</span>
+                    {% else %}
+                        <span class="status-pending">Pending</span>
+                    {% endif %}
+                </span>
+                <span class="stat-label">Verification Status</span>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h3 class="section-title">About Company</h3>
+            <p class="company-description">{{ company.description|linebreaksbr }}</p>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    /* Content wrapper fitting nicely between your extended header & footer */
+    .company-detail-container {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 30px;
+        width: 100%;
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+        align-items: start;
+    }
+
+    /* Core frosted glass card rule matching your interface image */
+    .company-glass-card {
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 8px 32px 0 rgba(2, 128, 144, 0.06);
+    }
+
+    /* Left profile column adjustments */
+    .sidebar-card {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo-wrapper {
+        width: 120px;
+        height: 120px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        margin-bottom: 20px;
+    }
+
+    .company-logo {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 10px;
+    }
+
+    .logo-placeholder {
+        font-size: 42px;
+        font-weight: 600;
+        color: #028090;
+    }
+
+    .company-name {
+        font-size: 22px;
+        color: #1a4d46;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 4px;
+    }
+
+    .verified-badge {
+        display: inline-flex;
+        background: #00a896;
+        border-radius: 50%;
+        padding: 3px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .badge-icon {
+        fill: #ffffff;
+        width: 100%;
+        height: 100%;
+    }
+
+    .company-industry {
+        font-size: 14px;
+        color: #4a7570;
+        margin-bottom: 20px;
+    }
+
+    .card-divider {
+        border: 0;
+        height: 1px;
+        background: rgba(2, 128, 144, 0.15);
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .meta-info-list {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 24px;
+    }
+
+    .meta-item {
+        margin-bottom: 14px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .meta-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #6a948f;
+        margin-bottom: 2px;
+    }
+
+    .meta-value, .meta-link {
+        font-size: 14px;
+        color: #1e3a35;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .meta-link {
+        color: #028090;
+        transition: color 0.2s ease;
+    }
+
+    .meta-link:hover {
+        color: #00a896;
+    }
+
+    .btn-edit-profile {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(2, 128, 144, 0.25);
+        border-radius: 12px;
+        color: #028090;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.25s ease;
+    }
+
+    .btn-edit-profile:hover {
+        background: #028090;
+        color: #ffffff;
+        border-color: #028090;
+        transform: translateY(-1px);
+    }
+
+    /* Right column main profile design */
+    .main-content-card {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-number {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1a4d46;
+        margin-bottom: 4px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #6a948f;
+    }
+
+    .status-active { color: #00a896; }
+    .status-pending { color: #d98238; }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a4d46;
+        margin-bottom: 12px;
+        letter-spacing: 0.3px;
+    }
+
+    .company-description {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #2c4a45;
+    }
+
+    /* Responsive adjustments for mid-to-small breakpoints */
+    @media (max-width: 850px) {
+        .company-detail-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock main %}

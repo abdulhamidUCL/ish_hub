@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Barcha arizalar - Ish_Hub{% endblock title %}
+
+{% block main %}
+<div class="apps-container">
+
+    <h1 class="apps-title">Barcha arizalar</h1>
+
+    {% if application %}
+    <table class="apps-table">
+        <thead>
+            <tr>
+                <th>Lavozim</th>
+                <th>Kompaniya</th>
+                <th>Holat</th>
+                <th>Sana</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in application %}
+            <tr>
+                <td>{{ app.job.title }}</td>
+                <td>{{ app.job.company.name }}</td>
+                <td><span class="status-badge status-{{ app.status }}">{{ app.get_status_display }}</span></td>
+                <td>{{ app.applied_at|date:"d.m.Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-text">Hali hech qanday ariza yo'q.</p>
+    {% endif %}
+
+</div>
+
+<style>
+.apps-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 24px;
+}
+
+.apps-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 28px;
+}
+
+.apps-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.apps-table th {
+    text-align: left;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.apps-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.92rem;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-reviewed { background: #dbeafe; color: #1e40af; }
+.status-accepted { background: #d1fae5; color: #065f46; }
+.status-rejected { background: #fee2e2; color: #991b1b; }
+
+.empty-text {
+    color: #64748b;
+    padding: 20px 0;
+}
+</style>
+{% endblock main %}

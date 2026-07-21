@@ -1,0 +1,25 @@
+{% if status == "pending" %}
+
+<span class="badge pending">
+    Pending
+</span>
+
+{% elif status == "reviewed" %}
+
+<span class="badge reviewed">
+    Reviewed
+</span>
+
+{% elif status == "accepted" %}
+
+<span class="badge accepted">
+    Accepted
+</span>
+
+{% else %}
+
+<span class="badge rejected">
+    Rejected
+</span>
+
+{% endif %}

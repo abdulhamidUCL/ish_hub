@@ -1,0 +1,309 @@
+<section class="hero-section">
+
+    <h1 class="hero-title">
+        Yagona platforma ish beruvchilar va xodimlar uchun
+    </h1>
+
+    <p class="hero-text">
+        O'zbekistondagi zamonaviy ish qidirish va xodimlarni yollash ekotizimi.
+        O'z rolingizni tanlang va imkoniyatlardan to'liq foydalaning.
+    </p>
+    {% if request.user.is_authenticated %}
+    <div class="role-container">
+        {% if request.user.profile.role == 'seeker' %}
+        <a href="{% url 'job_search' %}" class="role-card card-seeker">
+            <div class="role-icon icon-blue">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+            </div>
+            <div class="role-info">
+                <h3>Ish izlash</h3>
+                <p>Karyerangizni boshlang yoki yangi darajaga olib chiqing</p>
+            </div>
+            <span class="role-arrow">→</span>
+        </a>
+        {% elif request.user.profile.role == 'employer' %}
+        <a href="{% url 'create_job' %}" class="role-card card-employer">
+            <div class="role-icon icon-teal">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </div>
+            <div class="role-info">
+                <h3>E'lon joylashtirish</h3>
+                <p>Kompaniyangiz uchun eng sara mutaxassislarni toping</p>
+            </div>
+            <span class="role-arrow">→</span>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+    <div class="user-welcome-badge">
+        {% if request.user.profile.role == 'seeker' %}
+            <span class="badge-dot dot-blue"></span> Tizimga kirdingiz: Ish izlovchi
+        {% elif request.user.profile.role == 'employer' %}
+            <span class="badge-dot dot-teal"></span> Tizimga kirdingiz: Ish beruvchi
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Job search bar -> GET /jobs/?q=&city= -->
+    {% if request.user.profile.role == 'seeker' and request.user.is_authenticated %}
+    <form method="get" action="{% url 'job_search' %}" class="hero-search-form">
+        <div class="hero-search-field">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="hero-search-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input type="text" name="q" placeholder="Kasb, lavozim yoki kalit so'z" class="hero-search-input">
+        </div>
+        <div class="hero-search-divider"></div>
+        <div class="hero-search-field hero-search-field-city">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="hero-search-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+            <input type="text" name="city" placeholder="Shahar" class="hero-search-input">
+        </div>
+        <button type="submit" class="hero-search-btn">Qidirish</button>
+    </form>
+    {% endif %}
+</section>
+
+
+<style>
+  .hero-section {
+    max-width: 620px;
+    margin-left: 30px;
+    margin-right: auto;
+    padding-top: 80px;
+    padding-bottom: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.05;
+    color: #0f172a;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+}
+
+.hero-text {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #475569;
+    max-width: 560px;
+    margin-bottom: 36px;
+}
+
+/* Role Selector Container */
+.role-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 560px;
+    margin-bottom: 24px;
+}
+
+/* Glassmorphic Minimalist Cards */
+.role-card {
+    display: flex;
+    align-items: center;
+    padding: 18px 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.role-card:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+}
+
+/* Card Specific Hover Accent */
+.card-seeker:hover {
+    border-left: 4px solid #3b82f6;
+}
+
+.card-employer:hover {
+    border-left: 4px solid #14b8a6;
+}
+
+/* Micro Icons */
+.role-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    margin-right: 18px;
+    flex-shrink: 0;
+}
+
+.icon-blue {
+    background-color: #eff6ff;
+    color: #3b82f6;
+}
+
+.icon-teal {
+    background-color: #f0fdfa;
+    color: #14b8a6;
+}
+
+.role-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Typography Inside Cards */
+.role-info {
+    flex: 1;
+}
+
+.role-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 2px 0;
+}
+
+.role-info p {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.role-arrow {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    transition: transform 0.2s ease;
+    padding-left: 10px;
+}
+
+.role-card:hover .role-arrow {
+    transform: translateX(4px);
+    color: #0f172a;
+}
+
+/* Dynamic State Badge */
+.user-welcome-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #64748b;
+    background: #f8fafc;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 28px;
+}
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dot-blue { background-color: #3b82f6; }
+.dot-teal { background-color: #14b8a6; }
+
+/* Job search bar */
+.hero-search-form {
+    display: flex;
+    align-items: center;
+    max-width: 560px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 6px 6px 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.hero-search-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+.hero-search-field-city {
+    flex: 0 0 150px;
+}
+
+.hero-search-icon {
+    width: 18px;
+    height: 18px;
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.hero-search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #0f172a;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.hero-search-input::placeholder {
+    color: #94a3b8;
+}
+
+.hero-search-divider {
+    width: 1px;
+    height: 24px;
+    background: #e2e8f0;
+    margin: 0 12px;
+    flex-shrink: 0;
+}
+
+.hero-search-btn {
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.hero-search-btn:hover {
+    background: #2563eb;
+}
+
+@media (max-width: 640px) {
+    .hero-search-form {
+        flex-wrap: wrap;
+        border-radius: 20px;
+        padding: 12px;
+    }
+    .hero-search-divider {
+        display: none;
+    }
+    .hero-search-field-city {
+        flex: 1 1 100%;
+    }
+    .hero-search-btn {
+        width: 100%;
+        margin-top: 8px;
+    }
+}
+</style>

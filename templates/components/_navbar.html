@@ -1,0 +1,217 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg fixed-top custom-glass-nav">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}" style="color: #0b131f; letter-spacing: 0.5px;">
+            <span style="color: #0d1b2a;">ISH</span><span style="color: #14b8a6;">HUB</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {% if not request.user.is_authenticated %}
+                <div class="d-flex ms-auto gap-2 mt-2 mt-lg-0">
+                    <a href="{% url 'user_login' %}" class="btn btn-outline-dark rounded-pill px-4 btn-nav-login">
+                        Kirish
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-primary rounded-pill px-4">
+                        Ro'yxatdan o'tish
+                    </a>
+                </div>
+            {% else %}
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    {% if request.user.profile.role == 'employer' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Bosh Sahifa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard' %}">Xodimlarni qidirish</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'my_jobs' %}">Mening e'lonlarim</a>
+                        </li>
+                    {% elif request.user.profile.role == 'seeker' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Bosh Sahifa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'job_search' %}">Vakansiyalar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard' %}">Kompaniyalar</a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Dropdown -->
+                <div class="dropdown profile-dropdown ms-lg-2">
+                    <button class="profile-btn dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        {{ request.user.username }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end profile-menu animate fade-in">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'view_profile' request.user.pk %}">
+                                <i class="bi bi-person me-2"></i> Profilimni ko'rish
+                            </a>
+                        </li>
+
+                        {% if request.user.profile.role == 'seeker' %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'edit_resume' %}">
+                                <i class="bi bi-file-earmark-person me-2"></i> Rezumeni tahrirlash
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'my_applications' %}">
+                                <i class="bi bi-briefcase me-2"></i> Mening arizalarim
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if request.user.profile.role == 'employer' %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'company_detail' %}">
+                                <i class="bi bi-building me-2"></i> Kompaniya profili
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item logout-item" href="{% url 'user_logout' %}">
+                                <i class="bi bi-box-arrow-right me-2"></i> Chiqish
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* Navbar base */
+    .custom-glass-nav {
+      background: rgba(255, 255, 255, 0.7) !important; /* Slightly increased background opacity for readability */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 12px 0;
+    }
+
+    .custom-glass-nav .nav-link {
+      color: #334155 !important;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+    }
+
+    .custom-glass-nav .nav-link:hover {
+      color: #14b8a6 !important;
+    }
+
+    /* Target User Dropdown Trigger */
+    .profile-btn {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .profile-btn:hover, .profile-btn:focus {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #14b8a6;
+    }
+
+    /* Fixed Glassmorphism Dropdown Menu Container */
+    .profile-menu {
+      margin-top: 12px !important;
+      border: 1px solid rgba(255, 255, 255, 0.7) !important;
+      border-radius: 16px !important;
+      padding: 8px !important;
+      min-width: 240px;
+      /* Solidified white layer combined with blur prevents text behind it from bleeding through jarringly */
+      background: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Inside Dropdown List Items */
+    .profile-menu .dropdown-item {
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 500;
+      color: #334155;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    /* Hover updates: swapped harsh dark color fills for a modern soft background tint */
+    .profile-menu .dropdown-item:hover {
+      background: rgba(20, 184, 166, 0.08) !important;
+      color: #0d9488 !important;
+    }
+
+    .profile-menu .dropdown-divider {
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      margin: 6px 8px;
+    }
+
+    /* Premium Destructive Styling for Logout */
+    .logout-item {
+      color: #ef4444 !important;
+    }
+
+    .logout-item:hover {
+      background: rgba(239, 68, 68, 0.08) !important;
+      color: #dc2626 !important;
+    }
+
+    /* Optional Slide-down transition trick */
+    @media (min-width: 992px) {
+      .animate {
+        animation-duration: 0.2s;
+        animation-fill-mode: both;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .fade-in { animation-name: fadeIn; }
+    }
+
+    @media (max-width: 991px) {
+    .navbar-collapse {
+        margin-top: 15px;
+        background: rgba(255,255,255,.95);
+        border-radius: 16px;
+        padding: 16px;
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .profile-dropdown {
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .profile-btn {
+        width: 100%;
+    }
+}
+</style>

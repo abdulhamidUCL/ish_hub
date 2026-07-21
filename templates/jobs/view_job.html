@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+<section class="job-view-section">
+    <div class="job-view-card">
+        <div class="job-top">
+            <div>
+                <h1>{{ job.title }}</h1>
+
+                <p class="job-meta">
+                    {{ job.get_employment_type_display }}
+                    •
+                    {{ job.city }}
+                </p>
+            </div>
+
+            <div class="top-actions">
+                {% if request.user.profile.role == 'employer' %}
+                <div class="action-buttons">
+                    <a href="{% url 'edit_job' job.id %}" class="action-btn edit-btn" title="Edit">
+                        <span>✏️</span> EDIT
+                    </a>
+
+                    <form method="post"
+                          action="{% url 'delete_job' job.id %}"
+                          onsubmit="return confirm('Delete this job permanently?');">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn delete-btn" title="Delete">
+                            <span>🗑️</span> DELETE
+                        </button>
+                    </form>
+                </div>
+                {% else %}
+                {% if job.is_active %}
+                <span class="status active">
+                    ● Accepting Applications
+                </span>
+                {% else %}
+                <span class="status closed">
+                    ● Closed
+                </span>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <span>Salary</span>
+                <h3>${{ job.salary_min }} - ${{ job.salary_max }}</h3>
+            </div>
+
+            <div class="info-card">
+                <span>Category</span>
+                <h3>{{ job.category }}</h3>
+            </div>
+
+            <div class="info-card">
+                <span>Deadline</span>
+                <h3>{{ job.deadline|date:"F d, Y" }}</h3>
+            </div>
+
+            <div class="info-card">
+                <span>Employment</span>
+                <h3>{{ job.get_employment_type_display }}</h3>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2>Job Description</h2>
+            <p>{{ job.description }}</p>
+        </div>
+
+        <div class="content-box">
+            <h2>Requirements</h2>
+            <p>{{ job.requirements }}</p>
+        </div>
+
+        {% if request.user.profile.role == "employer" %}
+
+<div class="content-box">
+    <h2>Application Statistics</h2>
+    <div class="info-grid">
+
+        <div class="info-card">
+            <span>Total Applicants</span>
+            <h3>{{ job.application_set.count }}</h3>
+        </div>
+
+        <div class="info-card">
+            <span>Pending</span>
+            <h3>{{ pending_count }}</h3>
+        </div>
+
+        <div class="info-card">
+            <span>Accepted</span>
+            <h3>{{ accepted_count }}</h3>
+        </div>
+
+        <div class="info-card">
+            <span>Rejected</span>
+            <h3>{{ rejected_count }}</h3>
+        </div>
+    </div>
+    <div class="button-area">
+        <a
+            href="{% url 'applicant_list' job.id %}"
+            class="publish-btn">
+            👥 View Applicants
+        </a>
+    </div>
+</div>
+{% endif %}
+
+        {% if job.is_active %}
+        {% if request.user.profile.role == 'seeker' %}
+        <div class="button-area">
+            <button class="publish-btn">
+                Apply For This Job
+            </button>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</section>
+
+<style>
+.job-view-section {
+    padding: 120px 20px 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.job-view-card {
+    width: 100%;
+    max-width: 1100px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 30px;
+    padding: 45px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+}
+
+.job-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.job-top h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: #17384d;
+}
+
+.job-meta {
+    color: #37c9c5;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.status {
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.active {
+    background: rgba(220, 255, 248, 0.6);
+    backdrop-filter: blur(5px);
+    color: #00a886;
+    border: 1px solid rgba(0, 168, 134, 0.15);
+}
+
+.closed {
+    background: rgba(244, 244, 244, 0.6);
+    backdrop-filter: blur(5px);
+    color: #777;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin: 40px 0;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.info-card span {
+    color: #8a9bab;
+    font-size: 14px;
+}
+
+.info-card h3 {
+    margin-top: 10px;
+    color: #183548;
+    font-size: 22px;
+}
+
+.content-box {
+    margin-bottom: 35px;
+}
+
+.content-box h2 {
+    margin-bottom: 15px;
+    color: #17384d;
+    font-size: 26px;
+}
+
+.content-box p {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 30px;
+    border-radius: 20px;
+    white-space: pre-wrap;
+    line-height: 1.8;
+    color: #445566;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.button-area {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.publish-btn {
+    padding: 18px 60px;
+    border: none;
+    border-radius: 50px;
+    background: #1bcfc9;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.publish-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(27, 207, 201, .35);
+}
+
+/* --- Fixed & Enhanced Glassmorphism Action Buttons --- */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.action-buttons form {
+    margin: 0;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    /* Frosted glass base styling */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 14px;
+
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s ease;
+}
+
+.action-btn span {
+    font-size: 16px;
+}
+
+/* Edit Specific Glass Tint */
+.edit-btn {
+    color: #17384d;
+}
+
+.edit-btn:hover {
+    background: rgba(27, 207, 201, 0.2);
+    border-color: rgba(27, 207, 201, 0.4);
+    color: #128e8a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(27, 207, 201, 0.15);
+}
+
+/* Delete Specific Glass Tint */
+.delete-btn {
+    color: #e03131;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 77, 90, 0.15);
+    border-color: rgba(255, 77, 90, 0.4);
+    color: #ff4d5a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 77, 90, 0.15);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+</style>
+{% endblock main %}

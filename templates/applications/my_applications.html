@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Mening arizalarim - Ish_Hub{% endblock title %}
+
+{% block main %}
+<div class="apps-container">
+
+    <h1 class="apps-title">Mening arizalarim</h1>
+
+    {% if application %}
+    <div class="apps-list">
+        {% for app in application %}
+        <div class="app-card">
+            <div class="app-card-main">
+                <h3>{{ app.job.title }}</h3>
+                <p class="app-company">{{ app.job.company.name }} · {{ app.job.city }}</p>
+            </div>
+            <div class="app-card-side">
+                <span class="status-badge status-{{ app.status }}">{{ app.get_status_display }}</span>
+                <span class="app-date">{{ app.applied_at|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-text">Siz hali hech qanday vakansiyaga ariza topshirmagansiz. <a href="{% url 'job_search' %}">Vakansiyalarni ko'rish</a></p>
+    {% endif %}
+
+</div>
+
+<style>
+.apps-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 24px;
+}
+
+.apps-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 28px;
+}
+
+.apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.app-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 18px 24px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,0.03);
+}
+
+.app-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.app-company {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.app-card-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-reviewed { background: #dbeafe; color: #1e40af; }
+.status-accepted { background: #d1fae5; color: #065f46; }
+.status-rejected { background: #fee2e2; color: #991b1b; }
+
+.app-date {
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.empty-text {
+    color: #64748b;
+    padding: 20px 0;
+}
+
+.empty-text a {
+    color: #3b82f6;
+    font-weight: 600;
+    text-decoration: none;
+}
+</style>
+{% endblock main %}

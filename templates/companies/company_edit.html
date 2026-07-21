@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Company
+{% endblock title %}
+
+{% block main %}
+<br><br>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h3>Edit Company</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">
+                            Save Changes
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Base Setup & Layout Matching */
+.container.mt-5 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 100px 20px 40px;
+    margin-top: 0 !important; /* Overrides Bootstrap mt-5 for exact spacing alignment */
+}
+
+/* Fixes the "too slim" issue by forcing the layout elements to expand */
+.row, .col-md-8 {
+    width: 100% !important;
+    max-width: 680px !important;
+    display: flex;
+    justify-content: center;
+}
+
+.card, .card-body, form, form * {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Glassmorphic Container Structure */
+.card.shadow {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100% !important; /* Uses the full 680px width */
+    box-shadow: 0 8px 32px 0 rgba(0, 168, 150, 0.08) !important;
+}
+
+/* Header Adjustments */
+.card-header {
+    background: transparent;
+    border-bottom: none;
+    text-align: center;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.card-header h3 {
+    color: #1a4d46;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Remove default Bootstrap padding constraints */
+.card-body {
+    padding: 0;
+    width: 100%;
+}
+
+form {
+    width: 100%;
+}
+
+/* Paragraph & Input Elements via {{ form.as_p }} Setup */
+form p {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+form p label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #2c5e56;
+    margin-bottom: 6px;
+    padding-left: 2px;
+}
+
+/* Input Fields Styling */
+form p input[type="text"],
+form p input[type="url"],
+form p input[type="number"],
+form p textarea,
+form p select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    color: #1e3a35;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+form p textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+form p input:focus,
+form p textarea:focus,
+form p select:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #00a896;
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.15);
+}
+
+form p input[type="file"] {
+    background: transparent;
+    padding: 8px 0;
+    font-size: 13px;
+    color: #4a7570;
+}
+
+/* Button & Action Adjustments */
+.btn.btn-primary {
+    background: linear-gradient(135deg, #028090 0%, #00a896 100%);
+    color: #ffffff;
+    border: none;
+    padding: 14px 40px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 12px
+</style>
+
+{% endblock main %}

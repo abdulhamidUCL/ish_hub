@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block main %}
+
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+        <h2>{{ title }}</h2>
+        <p class="subtitle">
+            Welcome back to ISHHUB
+        </p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <small class="error">
+                            {{ field.errors.0 }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="auth-btn">
+                Sign In
+            </button>
+            <div class="register-link">
+                Don't have an account?
+                <a href="{% url 'register' %}">
+                    Create one
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+<style>
+
+.auth-wrapper{
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+.auth-card{
+    width:100%;
+    max-width:450px;
+
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    border-radius:20px;
+    padding:35px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.08);
+}
+
+.auth-card h2{
+    text-align:center;
+    margin-bottom:8px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:500;
+    color:#334155;
+}
+
+.form-group input{
+    width:100%;
+    padding:12px 14px;
+
+    border:1px solid #dbe4ea;
+    border-radius:10px;
+
+    background:white;
+
+    transition:.2s;
+}
+
+.form-group input:focus{
+    border-color:#14b8a6;
+    box-shadow:0 0 0 4px rgba(20,184,166,.15);
+    outline:none;
+}
+
+.auth-btn{
+    width:100%;
+    border:none;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    background:linear-gradient(
+        135deg,
+        #14b8a6,
+        #0f766e
+    );
+
+    color:white;
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.auth-btn:hover{
+    transform:translateY(-2px);
+}
+
+.register-link{
+    text-align:center;
+    margin-top:18px;
+    color:#64748b;
+}
+
+.register-link a{
+    color:#14b8a6;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.register-link a:hover{
+    color:#0f766e;
+}
+
+.error{
+    display:block;
+    margin-top:5px;
+    color:#dc2626;
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Ish_Hub{% endblock title %}
+
+{% block main %}
+<div class="dash-container">
+
+    <h1 class="dash-title">{{ company.name }} — boshqaruv paneli</h1>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <span class="stat-number">{{ active_jobs_count }}</span>
+            <span class="stat-label">Faol vakansiyalar</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ total_applicants }}</span>
+            <span class="stat-label">Jami nomzodlar</span>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-header">
+            <h2>So'nggi arizalar</h2>
+            <div style="display:flex; gap:10px;">
+                <a href="{% url 'my_jobs' %}" class="new-job-btn">
+                    My Jobs
+                </a>
+                <a href="{% url 'create_job' %}" class="new-job-btn">
+                    + Yangi vakansiya
+                </a>
+            </div>
+        </div>
+        {% if recent_applications %}
+        <table class="dash-table">
+            <thead>
+            <tr>
+                <th>Nomzod</th>
+                <th>Lavozim</th>
+                <th>Holat</th>
+                <th>Sana</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for app in recent_applications %}
+            <tr>
+                <td>{{ app.user.get_full_name|default:app.user.username }}</td>
+                <td>{{ app.job.title }}</td>
+                <td><span class="status-badge status-{{ app.status }}">{{ app.get_status_display }}</span></td>
+                <td>{{ app.applied_at|date:"d.m.Y" }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'my_jobs' %}" class="see-all-link">Barcha vakansiyalarni ko'rish →</a>
+        {% else %}
+        <p class="empty-text">Hali arizalar yo'q.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<style>
+    .dash-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 24px;
+    }
+
+    .dash-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 28px;
+    }
+
+    .stats-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .stat-card {
+        flex: 1;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: 0 2px 4px -1px rgba(0,0,0,0.03);
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #14b8a6;
+    }
+
+    .stat-label {
+        display: block;
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-top: 4px;
+    }
+
+    .section-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 28px;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .new-job-btn {
+        background: #14b8a6;
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .dash-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .dash-table th {
+        text-align: left;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 8px 12px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .dash-table td {
+        padding: 12px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.92rem;
+    }
+
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-reviewed { background: #dbeafe; color: #1e40af; }
+    .status-accepted { background: #d1fae5; color: #065f46; }
+    .status-rejected { background: #fee2e2; color: #991b1b; }
+
+    .see-all-link {
+        display: inline-block;
+        margin-top: 16px;
+        color: #14b8a6;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+    }
+
+    .see-all-link:hover {
+        text-decoration: underline;
+    }
+
+    .empty-text {
+        color: #64748b;
+        padding: 20px 0;
+    }
+</style>
+{% endblock main %}

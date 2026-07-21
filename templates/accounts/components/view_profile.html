@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ish_Hub{% endblock title %}
+
+{% block main %}
+<br><br>
+
+<div class="profile-page">
+    <div style="max-width: 860px; margin: 60px auto; padding: 0 16px;">
+        <div style="background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+            <!-- Banner -->
+            <div style="height: 160px; background: linear-gradient(135deg, #0f6e56 0%, #1d9e75 60%, #26d0ce 100%); position: relative;">
+                <div style="position: absolute; bottom: -52px; left: 40px;">
+                    <div style="width: 104px; height: 104px; border-radius: 50%; border: 4px solid #fff; overflow: hidden; background: #1d9e75; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #fff; font-weight: 600;">
+                        {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="Avatar"
+                             style="width:100%; height:100%; object-fit:cover;">
+                        {% else %}
+                        {{ request.user.username|first|upper }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div style="padding: 64px 40px 40px;">
+
+                <!-- Name + Edit button row -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px;">
+                    <div>
+                        <h2 style="font-size: 30px; font-weight: 700; color: #1a1a1a; margin: 0 0 8px;">{{ request.user.username }}</h2>
+                        <span style="display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 14px; background: #e1f5ee; color: #0f6e56; font-weight: 600;">
+            {{ profile.role|capfirst }}
+          </span>
+                    </div>
+                    <a href="{% url 'edit_profile' %}"
+                       style="display: inline-flex; align-items: center; gap: 6px; padding: 11px 24px; border-radius: 10px; background: #1d9e75; color: #fff; text-decoration: none; font-size: 16px; font-weight: 500;">
+                        ✏️ Edit Profile
+                    </a>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid #eee; margin: 0 0 32px;">
+
+                <!-- Info grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px;">
+
+                    <div>
+                        <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin: 0 0 6px;">
+                            Username</p>
+                        <p style="font-size: 19px; color: #1a1a1a; margin: 0; font-weight: 500;">👤 {{ request.user.username }}</p>
+                    </div>
+
+                    <div>
+                        <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin: 0 0 6px;">
+                            Email</p>
+                        <p style="font-size: 19px; color: #1a1a1a; margin: 0; font-weight: 500;">✉️ {{ request.user.email }}</p>
+                    </div>
+
+                    <div>
+                        <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin: 0 0 6px;">
+                            Phone</p>
+                        <p style="font-size: 19px; color: #1a1a1a; margin: 0; font-weight: 500;">📞 {% if profile.phone %}{{ profile.phone }}{% else %}<span style="color:#bbb;">Not set</span>{% endif %}</p>
+                    </div>
+
+                    <div>
+                        <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin: 0 0 6px;">
+                            City</p>
+                        <p style="font-size: 19px; color: #1a1a1a; margin: 0; font-weight: 500;">📍 {% if profile.city %}{{ profile.city }}{% else %}<span style="color:#bbb;">Not set</span>{% endif %}</p>
+                    </div>
+
+                </div>
+
+                <!-- Bio -->
+                {% if profile.bio %}
+                <div style="margin-top: 32px;">
+                    <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin: 0 0 8px;">
+                        Bio</p>
+                    <p style="font-size: 18px; color: #333; line-height: 1.7; margin: 0;">{{ profile.bio }}</p>
+                </div>
+                {% endif %}
+
+
+                {% if profile.role == 'seeker' %}
+                <div style="margin-top: 40px;">
+                    <hr style="border: none; border-top: 1px solid #eee; margin-bottom: 32px;">
+                    <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #888;">
+                        Resume
+                    </p>
+
+                    <h3 style="margin-bottom: 20px;">
+                        {{ resume.title }}
+                    </h3>
+                    {% if resume.skills %}
+                    <div style="margin-bottom: 20px;">
+                        <strong>Skills</strong>
+                        <p>{{ resume.skills|linebreaks }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if resume.experience %}
+                    <div style="margin-bottom: 20px;">
+                        <strong>Experience</strong>
+                        <p>{{ resume.experience|linebreaks }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if resume.education %}
+                    <div style="margin-bottom: 20px;">
+                        <strong>Education</strong>
+                        <p>{{ resume.education|linebreaks }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if resume.resume_file %}
+                    <a href="{{ resume.resume_file.url }}"
+                       target="_blank"
+                       style="
+           display:inline-block;
+           padding:12px 24px;
+           background:#1d9e75;
+           color:white;
+           text-decoration:none;
+           border-radius:10px;
+           font-weight:600;">📄 View Uploaded Resume</a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div style="margin-top: 40px;">
+                    <hr style="border: none; border-top: 1px solid #eee; margin-bottom: 24px;">
+                    <p style="color:#888;">
+                        No resume created yet.
+                    </p>
+                    <a href="{% url 'edit_resume' %}"
+                       style="
+           display:inline-block;
+           padding:12px 24px;
+           background:#1d9e75;
+           color:white;
+           text-decoration:none;
+           border-radius:10px;">Create Resume</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endblock main %}
+
+
