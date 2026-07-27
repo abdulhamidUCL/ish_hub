@@ -4,9 +4,24 @@
 
 {% block main %}
 <!--left side content-->
-{% include 'accounts/components/main_1.html' %}
+<div class="page-content">
+    {% include 'accounts/components/main_1.html' %}
 
-<!--cards at the bottom-->
-{% include 'accounts/components/cards.html' %}
+    <div class="cards-wrapper">
+        {% include 'accounts/components/cards.html' %}
+    </div>
+</div>
+
+<style>
+    .page-content{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+}
+
+.cards-wrapper{
+    margin-top:auto;
+}
+</style>
 
 {% endblock main %}

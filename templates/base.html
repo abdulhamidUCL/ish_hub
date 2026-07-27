@@ -14,12 +14,16 @@
 {% include 'components/_navbar.html' %}
 <!--/navbar-->
 
-<div class="main-container min-h-screen"
+<div class="main-container"
      style="
         background-image: url('{% static 'images/image_1.png' %}');
         background-size: cover;
         background-position: center;
-        min-height: 100vh;
+        min-height: 100vh;.main-container{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
      ">
     {% block main %}
     {% endblock main %}
