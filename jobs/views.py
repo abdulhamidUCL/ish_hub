@@ -19,24 +19,29 @@ from applications.models import Application
 # Create your views here.
 @login_required
 def job_search(request):
-    q = request.GET.get('q', '').strip()
-    city = request.GET.get('city', '').strip()
+    q = request.GET.get("q", "").strip()
+    city = request.GET.get("city", "").strip()
 
     jobs = Job.objects.filter(is_active=True)
 
     if q:
-        jobs = jobs.filter(Q(title__icontains=q) | Q(description__icontains=q))
+        jobs = jobs.filter(
+            Q(title__icontains=q) |
+            Q(description__icontains=q) |
+            Q(company__icontains=q) |
+            Q(city__icontains=q)
+        )
+
     if city:
         jobs = jobs.filter(city__icontains=city)
 
-    jobs = jobs.order_by('-created_at')
+    jobs = jobs.order_by("-created_at")
 
-    return render(request, 'jobs/job_search.html', {
-        'jobs': jobs,
-        'q': q,
-        'city': city,
+    return render(request, "jobs/job_search.html", {
+        "jobs": jobs,
+        "q": q,
+        "city": city,
     })
-
 
 @login_required
 @employer_required
