@@ -28,7 +28,7 @@ def job_search(request):
         jobs = jobs.filter(
             Q(title__icontains=q) |
             Q(description__icontains=q) |
-            Q(company__icontains=q) |
+            Q(company__name__icontains=q) |
             Q(city__icontains=q)
         )
 
